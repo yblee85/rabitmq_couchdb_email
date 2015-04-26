@@ -34,56 +34,6 @@ public class AppUtilities {
 	        "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
 	        "([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
 	
-//	public static String initServerIPAddress() {
-//    	String ip_from_url = "";
-//    	String ip_result = "";
-//    	
-//    	// ask server couchdb url
-//    	URL qrurl;
-//		URLConnection qrc;
-//		try {
-//			qrurl = new URL("http://" + AppModel.serverCouchDBURL);
-//			qrc = qrurl.openConnection();
-//			qrc.setReadTimeout(10000); // 10 sec
-//			BufferedReader in = new BufferedReader(new InputStreamReader(qrc.getInputStream()));
-//	        String inputLine;
-//	        String content = "";
-//	        while ((inputLine = in.readLine()) != null) { 
-//	            content += inputLine;
-//	        }
-//	        in.close();
-//
-//	        /** FIX NO INTERNET **/
-//	        if(AppUtilities.validate_ip(content)) {
-//	        	ip_from_url = content;
-//	        }
-//		} catch (MalformedURLException e3) {
-//			e3.printStackTrace();
-//		} catch (IOException e2) {
-//			e2.printStackTrace();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		
-//    	// check ip
-//    	boolean is_exist_ip_from_url = ip_from_url!=null && !ip_from_url.equals("");
-//    	
-//		if(is_exist_ip_from_url) {
-//			System.out.println("server ip retrieved from url");
-//			ip_result = ip_from_url;
-//		} else {
-//			System.out.println("server ip retrieved from default");
-//			ip_result = AppModel.defaultCouchDBHost;
-//		}
-//	    	
-//		
-//		// initialize POSModel server ip
-//		AppModel.serverCouchDBHost = ip_result;
-//		AppModel.serverCouchDBAddress = "http://" + AppModel.serverCouchDBHost + ":"+ AppModel.serverCouchDBPort;
-//		
-//		//
-//    	return ip_result;
-//    }
 	
 	public static boolean validate_ip(final String ip){          
 	      Pattern pattern = Pattern.compile(IP_PATTERN);
@@ -120,57 +70,6 @@ public class AppUtilities {
 	        	return false;
 	    }
     }
-	
-//	public static boolean checkAndUpdate() {
-//		String serveraddress = "http://" + AppModel.serverCouchDBHost;
-//		String servercouchdbport = AppModel.serverCouchDBPort;
-//		boolean isUpdateAvailable = false;
-//		HttpClient httpServerUpdates = null;
-//		
-//		try {
-//			httpServerUpdates = new StdHttpClient.Builder().connectionTimeout(1800000).socketTimeout(1800000).url(serveraddress + ":" + servercouchdbport).build();
-//		} catch (MalformedURLException e) {
-//			e.printStackTrace();
-//		} catch (DbAccessException e) {
-//			e.printStackTrace();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		CouchDbInstance dbInstanceServerUpdate = new StdCouchDbInstance(httpServerUpdates);
-//		
-//		CouchDbConnector dbServerUpdates = new StdCouchDbConnector("install_files_rt7", dbInstanceServerUpdate);
-//		
-//		try {
-//			isUpdateAvailable = AppUtilities.checkUpdates(dbServerUpdates);
-//		} catch(ConnectTimeoutException e) {
-//			isUpdateAvailable = false;
-//		} catch(DbAccessException e) {
-//			isUpdateAvailable = false;
-//		}
-//		
-//		if(isUpdateAvailable) {
-//			SwingUtilities.invokeLater(new UpdateTask(dbServerUpdates, true));
-//		}
-//		
-//		return isUpdateAvailable;
-//	}
-	
-//	public static boolean checkUpdates (CouchDbConnector dbServer) throws ConnectTimeoutException {
-//		boolean updates = false;
-//		File file = new File(AppModel.rootDirName + AppUtilities.FILE_SEPARATOR + "PosEmail.jar");
-//		long size = 0;
-//		ViewQuery view = new ViewQuery().designDocId("_design/pos").viewName("get_pos_email_jar_size").key("5fc84fb55b280fa08e1d956ffc88fbd2");
-//		ViewResult result = dbServer.queryView(view);
-//		for(Row row : result.getRows()) {
-//			JsonNode param = row.getValueAsNode();
-//			size = param.getLongValue();
-//		}
-//		if(size != 0 && file.length() != size) {
-//			System.out.println("update available");
-//			updates = true;
-//		}
-//		return updates;
-//	}
 	
 	public static boolean writeMapIntoFile(String path, Map<String, Object> map) {
 		File f = new File(path);
