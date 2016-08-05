@@ -51,8 +51,10 @@ public class AppControl {
 		HttpClient httpClient;
 		try {
 			if(AppModel.SERVER_COUCH_USER.isEmpty() || AppModel.SERVER_COUCH_PASS.isEmpty()) {
+				System.out.println("=========== httpClient without cridential");
 				httpClient = new StdHttpClient.Builder().connectionTimeout(timeout).socketTimeout(timeout).url(AppModel.SERVER_COUCH_ADDRESS).build();
 			} else {
+				System.out.println("============ httpClient with cridential");
 				httpClient = new StdHttpClient.Builder().connectionTimeout(timeout).socketTimeout(timeout).url(AppModel.SERVER_COUCH_ADDRESS).username(AppModel.SERVER_COUCH_USER).password(AppModel.SERVER_COUCH_PASS).build();
 			}
 			dbInstance = new StdCouchDbInstance(httpClient);
@@ -69,10 +71,34 @@ public class AppControl {
 		}
 	}
 	
-	public ConnectionFactory initRabbitMQFactory(String host) {
+	public ConnectionFactory initRabbitMQFactory(String host, String port, String vhost, String user, String pass) {
 		// init rabbitmq 
 		ConnectionFactory factory = new ConnectionFactory();
 		factory.setHost(host);
+		
+		if(vhost != null && !vhost.isEmpty()) {
+			factory.setVirtualHost(vhost);
+		}
+		
+		if(port != null && !port.isEmpty()) {
+			int numPort = 0;
+			try {
+				numPort = Integer.parseInt(port);
+				if(numPort>0) {
+					factory.setPort(numPort);
+				}
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		if(user != null && !user.isEmpty()) {
+			factory.setUsername(user);
+		}
+		
+		if(pass != null && !pass.isEmpty()) {
+			factory.setPassword(pass);
+		}
 		
 		return factory;
 	}

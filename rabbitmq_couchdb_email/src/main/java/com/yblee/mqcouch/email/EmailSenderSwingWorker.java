@@ -29,6 +29,11 @@ public class EmailSenderSwingWorker extends SwingWorker<Void, String> {
 			System.out.println("sending emails...");
 			SendMailSSL sslMethod = new SendMailSSL(authUser, authPass);
 			boolean isSent = sslMethod.sendEmailSSL(from, to, title, content);
+			if(isSent) {
+				System.out.println("sent emails....");
+			} else {
+				System.out.println("fail sending emails...");
+			}
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

@@ -128,6 +128,10 @@ public class MqCouchEmailApp {
 		
 		Map<String, Object> mapConfig = AppUtilities.readFileIntoMap(AppModel.CONFIG_FILENAME);
 		
+//		for(String key : mapConfig.keySet()) {
+//			System.out.println(key + " : " + mapConfig.get(key).toString());
+//		}
+		
 		_initAppModelFromConfigMap(mapConfig);
 		_initEmailAccountFromConfigMap(mapConfig);
 		_initCouchDBSetupFromConfigMap(mapConfig);			
@@ -241,16 +245,22 @@ public class MqCouchEmailApp {
 				if(!couchdb_user.isEmpty()) {
 					AppModel.SERVER_COUCH_USER = couchdb_user;
 				}
-			} catch(Exception e) {}
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
 		}
+		
 		if(mapConfig.containsKey("couchdb_user_raw_pass") && mapConfig.get("couchdb_user_raw_pass")!=null) {
 			try {
 				String couchdb_user_raw_pass = mapConfig.get("couchdb_user_raw_pass").toString().trim();
 				if(!couchdb_user_raw_pass.isEmpty()) {
 					AppModel.SERVER_COUCH_PASS = couchdb_user_raw_pass;
 				}
-			} catch(Exception e) {}
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
 		}
+		
 		if(mapConfig.containsKey("couchdb_user_encrypted_pass") && mapConfig.get("couchdb_user_encrypted_pass")!=null) {
 			try {
 				String couchdb_user_encrypted_pass = mapConfig.get("couchdb_user_encrypted_pass").toString().trim();
@@ -258,7 +268,9 @@ public class MqCouchEmailApp {
 					String pass = SimpleProtector.decrypt(couchdb_user_encrypted_pass);
 					AppModel.SERVER_COUCH_PASS = pass;
 				}
-			} catch(Exception e) {}
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
 		}
 		
 		// check couch db sequence
@@ -298,6 +310,59 @@ public class MqCouchEmailApp {
 				}
 			} catch(Exception e) {}
 		}
+		
+		if(mapConfig.containsKey("mq_vhost") && mapConfig.get("mq_vhost")!=null) {
+			try {
+				String mq_vhost = mapConfig.get("mq_vhost").toString().trim();
+				if(!mq_vhost.isEmpty()) {
+					AppModel.RABBITMQ_VHOST = mq_vhost;
+				}
+			} catch(Exception e) {}
+		}
+		
+		if(mapConfig.containsKey("mq_port") && mapConfig.get("mq_port")!=null) {
+			try {
+				String mq_port = mapConfig.get("mq_port").toString().trim();
+				if(!mq_port.isEmpty()) {
+					AppModel.RABBITMQ_PORT = mq_port;
+				}
+			} catch(Exception e) {}
+		}
+		
+		// check rabbitmq user account
+		if(mapConfig.containsKey("mq_user") && mapConfig.get("mq_user")!=null) {
+			try {
+				String mq_user = mapConfig.get("mq_user").toString().trim();
+				if(!mq_user.isEmpty()) {
+					AppModel.MQ_USER = mq_user;
+				}
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		if(mapConfig.containsKey("mq_raw_pass") && mapConfig.get("mq_raw_pass")!=null) {
+			try {
+				String mq_raw_pass = mapConfig.get("mq_raw_pass").toString().trim();
+				if(!mq_raw_pass.isEmpty()) {
+					AppModel.MQ_PASS = mq_raw_pass;
+				}
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		if(mapConfig.containsKey("mq_encrypted_pass") && mapConfig.get("mq_encrypted_pass")!=null) {
+			try {
+				String mq_encrypted_pass = mapConfig.get("mq_encrypted_pass").toString().trim();
+				if(!mq_encrypted_pass.isEmpty()) {
+					String pass = SimpleProtector.decrypt(mq_encrypted_pass);
+					AppModel.MQ_PASS = pass;
+				}
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
 		if(AppModel.RABBITMQ_HOST.isEmpty()) {
 			AppModel.RABBITMQ_HOST = AppModel.DEFAULT_RABBITMQ_HOST;
 		}

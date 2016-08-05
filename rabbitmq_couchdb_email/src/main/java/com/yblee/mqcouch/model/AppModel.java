@@ -1,7 +1,7 @@
 package com.yblee.mqcouch.model;
 
 public class AppModel {
-	public static String version = "0.0.2";
+	public static String version = "0.0.4";
 	public static String rootDirName = "";
 //	public static String queueDirName = "queue";
 	
@@ -15,6 +15,8 @@ public class AppModel {
 	public static String DEFAULT_SERVER_COUCH_DB = "rabbitmq_email";
 	
 	public static String RABBITMQ_HOST = "";
+	public static String RABBITMQ_VHOST = "";
+	public static String RABBITMQ_PORT = "";
 	public static String RABBITMQ_QUEUE_NAME = "";
 	
 	public static String SERVER_COUCH_HOST = ""; 
@@ -27,9 +29,12 @@ public class AppModel {
 	public static String SENDER_EMAIL_PASS = "";
 	public static String SERVER_COUCH_USER = "";
 	public static String SERVER_COUCH_PASS = "";
+	public static String MQ_USER = "";
+	public static String MQ_PASS = "";
 	
 	// enabled check couchdb server feed
-	private boolean disabledCouchFeed = false, enabledDebug = false;
+	private boolean disabledCouchFeed = false;
+	public static boolean enabledDebug = false;
 	private long sequence = 0;
 	
 	public AppModel(boolean isDisabledCouchFeed, boolean enabledDebug) {
@@ -47,12 +52,12 @@ public class AppModel {
 	}
 	
 
-	public boolean isEnabledDebug() {
+	public static boolean isEnabledDebug() {
 		return enabledDebug;
 	}
 
-	public void setEnabledDebug(boolean enabledDebug) {
-		this.enabledDebug = enabledDebug;
+	public static void setEnabledDebug(boolean enabledDebug) {
+		AppModel.enabledDebug = enabledDebug;
 	}
 
 	public boolean isDisabledCouchFeed() {

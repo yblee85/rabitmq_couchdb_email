@@ -98,7 +98,7 @@ public class CouchDBPublisherControl {
 		
 		@Override
 		protected Void doInBackground() throws Exception {
-			producerFactory = control.initRabbitMQFactory(AppModel.RABBITMQ_HOST);
+			producerFactory = control.initRabbitMQFactory(AppModel.RABBITMQ_HOST, AppModel.RABBITMQ_PORT, AppModel.RABBITMQ_VHOST, AppModel.MQ_USER, AppModel.MQ_PASS);
 			initCouchDBPublisher();
 			return null;
 		}

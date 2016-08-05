@@ -54,7 +54,7 @@ public class RabbitMQConsumerControl {
 		}
 		
 		private Channel initRabbitMQCannel() {
-			ConnectionFactory factory = control.initRabbitMQFactory(AppModel.RABBITMQ_HOST);
+			ConnectionFactory factory = control.initRabbitMQFactory(AppModel.RABBITMQ_HOST, AppModel.RABBITMQ_PORT, AppModel.RABBITMQ_VHOST, AppModel.MQ_USER, AppModel.MQ_PASS);
 			try {
 				Connection conn = factory.newConnection();
 				Channel chan = conn.createChannel();

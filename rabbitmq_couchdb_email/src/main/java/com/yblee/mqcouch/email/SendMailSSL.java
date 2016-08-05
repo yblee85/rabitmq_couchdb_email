@@ -42,7 +42,7 @@ public class SendMailSSL {
 					return new PasswordAuthentication(authUSer, authPass);
 				}
 			});
- 
+		
 		try {
  
 			Message message = new MimeMessage(session);
@@ -66,30 +66,35 @@ public class SendMailSSL {
 	
 	public boolean sendEmailSSL(String from, String to, String title, String content) {
 		Properties props = new Properties();
-//		props.put("mail.smtp.host", "smtp.gmail.com");
-//		props.put("mail.smtp.socketFactory.port", "465");
-//		props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-//		props.put("mail.smtp.auth", "true");
-//		props.put("mail.smtp.port", "465");
 		props.put("mail.smtp.host", "secure.emailsrvr.com");
+//		props.put("mail.smtp.host", "smtp.emailsrvr.com");
 		props.put("mail.smtp.socketFactory.port", "465");
+//		props.put("mail.smtp.socketFactory.port", "2525");	//25, 587, 8025, 2525
 		props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.port", "465");
- 
-		Session session = Session.getDefaultInstance(props,
-			new javax.mail.Authenticator() {
-				protected PasswordAuthentication getPasswordAuthentication() {
-					return new PasswordAuthentication(authUSer, authPass);
-				}
-			});
+		props.put("mail.smtp.localhost", "myemailserver");
  
 		try {
 			
 			String strFrom = ((from!=null && !from.isEmpty())?from:AppModel.SENDER_EMAIL);
+			
+			if(strFrom.contains("gmail"))	props.put("mail.smtp.host", "smtp.gmail.com");	// gmail account doesn't seem to work here...
+			
+			Session session = Session.getDefaultInstance(props,
+					new javax.mail.Authenticator() {
+						protected PasswordAuthentication getPasswordAuthentication() {
+							return new PasswordAuthentication(authUSer, authPass);
+						}
+					});
+			if(AppModel.isEnabledDebug()) {
+				session.setDebug(true);
+			}
+			
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(strFrom));
-//			message.setFrom(InternetAddress.parse("from@no-spam.com")[0]);
+//			System.out.println("from : " + message.getFrom()[0]);
+//			message.setFrom(InternetAddress.parse(strFrom)[0]);
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
 			message.setSubject(title);
 			// html doesn't work
@@ -101,6 +106,7 @@ public class SendMailSSL {
 			System.out.println("Email Sent");
 			return true;
 		} catch (MessagingException e) {
+			e.printStackTrace();
 //			throw new RuntimeException(e);
 		} catch (Exception e) {
 			e.printStackTrace();
